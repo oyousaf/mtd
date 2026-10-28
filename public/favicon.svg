@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .tile { fill: #132b57; }
+    .edge { fill: none; stroke: #f5f2ec; stroke-opacity: 0; }
+    @media (prefers-color-scheme: dark) { .edge { stroke-opacity: 0.35; } }
+  </style>
+  <rect class="tile" width="64" height="64" rx="15"/>
+  <rect class="edge" x="1" y="1" width="62" height="62" rx="14" stroke-width="2"/>
+  <rect x="13" y="38" width="9" height="13" rx="2" fill="#ff5b1f"/>
+  <rect x="27.5" y="29" width="9" height="22" rx="2" fill="#ff5b1f"/>
+  <rect x="42" y="19" width="9" height="32" rx="2" fill="#ff5b1f"/>
+  <path d="M12 30 L30 17 L37 22 L50 12" fill="none" stroke="#d8f23a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M44 11.5 L51 11 L50.5 18" fill="none" stroke="#d8f23a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

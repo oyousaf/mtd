@@ -1,0 +1,8 @@
+---
+import { Phone, Send } from '@lucide/astro';
+import { site } from '@/data/site';
+---
+<div transition:persist="call-bar" class="call-bar fixed inset-x-3 bottom-3 z-40 grid grid-cols-2 gap-2 rounded-full border border-line bg-bg/85 p-1.5 shadow-[0_20px_50px_-15px_rgb(10_26_54/0.5)] backdrop-blur-xl sm:hidden">
+  <a href={site.phoneHref} class="btn-dark !py-3 text-sm"><Phone class="size-4" aria-hidden="true" /> Call us</a>
+  <a href="/contact#enquiry" class="btn-primary !py-3 text-sm"><Send class="size-4" aria-hidden="true" /> Enrol £20</a>
+</div>

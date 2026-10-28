@@ -1,0 +1,113 @@
+---
+import { Menu, Phone, X } from '@lucide/astro';
+import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { nav, site } from '@/data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="sticky top-0 z-50 pt-3" transition:name="site-header">
+  <div class="wrap">
+    <div class="header-bar flex items-center justify-between gap-3 rounded-full border border-line/80 bg-bg/75 py-2 pr-2 pl-4 shadow-[0_10px_40px_-20px_rgb(10_26_54/0.35)] backdrop-blur-xl backdrop-saturate-150">
+      <a href="/" aria-label="MTD Trade Books home" class="shrink-0"><Logo /></a>
+
+      <nav aria-label="Main" class="hidden xl:block">
+        <ul class="flex items-center gap-0.5 text-sm font-medium">
+          {nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class="relative block rounded-full px-3 py-2 text-muted transition hover:text-fg aria-[current=page]:text-fg"
+              >
+                {isActive(item.href) && (
+                  <span class="absolute inset-0 -z-10 rounded-full bg-surface-2" transition:name="nav-pill" transition:animate="initial" />
+                )}
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <ThemeToggle />
+        <a href={site.phoneHref} class="hidden size-10 place-items-center rounded-full border border-line bg-surface/70 sm:grid lg:hidden" aria-label={`Call ${site.phone}`}>
+          <Phone class="size-[18px]" aria-hidden="true" />
+        </a>
+        <a href="/contact" class="btn-primary hidden !py-2.5 sm:inline-flex">Contact</a>
+        <button type="button" class="grid size-10 place-items-center rounded-full bg-ink text-plaster transition-transform duration-300 ease-out-expo active:scale-90 xl:hidden dark:bg-plaster dark:text-ink" data-menu-open aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+          <Menu class="size-5" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="mobile-menu" class="m-0 h-dvh max-h-none w-full max-w-none bg-ink p-0 text-plaster backdrop:bg-transparent open:flex open:flex-col">
+    <div class="wrap flex items-center justify-between py-5">
+      <span class="menu-item font-mono text-xs tracking-[0.18em] text-plaster/60 uppercase" style="--i:0">Menu</span>
+      <button type="button" class="menu-close grid size-11 place-items-center rounded-full bg-plaster text-ink transition-transform duration-300 hover:rotate-90" data-menu-close aria-label="Close menu">
+        <X class="size-5" aria-hidden="true" />
+      </button>
+    </div>
+    <nav aria-label="Mobile" class="wrap flex-1 overflow-y-auto">
+      <ul class="divide-y divide-plaster/10 border-y border-plaster/10">
+        {[...nav, { href: '/contact', label: 'Contact' }].map((item, i) => (
+          <li class="menu-item" style={`--i:${i + 1}`}>
+            <a href={item.href} class="group flex items-baseline gap-4 py-4 font-display text-3xl font-bold tracking-tight">
+              <span class="font-mono text-xs text-orange">{String(i + 1).padStart(2, '0')}</span>
+              <span class="transition duration-300 ease-out-expo group-hover:translate-x-1.5 group-hover:text-lime">{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="menu-item wrap grid gap-3 py-6" style="--i:10">
+      <a href={site.phoneHref} class="btn-primary w-full"><Phone class="size-4" aria-hidden="true" /> {site.phone}</a>
+      <p class="text-center text-sm text-plaster/60">{site.hours}</p>
+    </div>
+  </dialog>
+</header>
+
+<script>
+  const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initMenu() {
+    const dialog = document.getElementById('mobile-menu') as HTMLDialogElement | null;
+    const trigger = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+    if (!dialog || !trigger) return;
+
+    const open = () => {
+      // Reveal grows out of the menu button
+      const r = trigger.getBoundingClientRect();
+      dialog.style.setProperty('--ox', `${r.left + r.width / 2}px`);
+      dialog.style.setProperty('--oy', `${r.top + r.height / 2}px`);
+      delete dialog.dataset.closing;
+      dialog.showModal();
+      trigger.setAttribute('aria-expanded', 'true');
+    };
+
+    const close = () => {
+      if (!dialog.open || 'closing' in dialog.dataset) return;
+      trigger.setAttribute('aria-expanded', 'false');
+      if (reduceMotion()) return dialog.close();
+      dialog.dataset.closing = '';
+    };
+
+    dialog.addEventListener('animationend', (e) => {
+      if (e.target === dialog && e.animationName === 'menu-out') {
+        delete dialog.dataset.closing;
+        dialog.close();
+      }
+    });
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      close();
+    });
+    trigger.addEventListener('click', open);
+    dialog.querySelector('[data-menu-close]')?.addEventListener('click', close);
+    dialog.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  }
+  document.addEventListener('astro:page-load', initMenu);
+</script>

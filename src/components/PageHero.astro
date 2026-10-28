@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { ArrowRight, Check } from '@lucide/astro';
+
+interface Cta { href: string; label: string }
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  imagePosition?: string;
+  checks?: string[];
+  primary?: Cta;
+  secondary?: Cta;
+}
+const { eyebrow, title, lede, image, imageAlt, imagePosition = 'right', checks = [], primary, secondary } = Astro.props;
+---
+<section class="relative overflow-hidden">
+  <div class="blueprint absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]" aria-hidden="true"></div>
+  <div class="wrap relative grid items-center gap-10 pt-12 pb-14 lg:grid-cols-12 lg:gap-8 lg:pt-20 lg:pb-20">
+    <div class="lg:col-span-6">
+      {eyebrow && <p class="eyebrow enter">{eyebrow}</p>}
+      <h1 style="--d:1" class="enter mt-5 text-[clamp(2.5rem,5.2vw,4.4rem)] leading-[0.95] font-extrabold" set:html={title} />
+      <p style="--d:2" class="enter mt-6 max-w-xl text-lg text-muted sm:text-xl">{lede}</p>
+      {(primary || secondary) && (
+        <div style="--d:3" class="enter mt-8 flex flex-wrap gap-3">
+          {primary && <a href={primary.href} class="btn-primary">{primary.label} <ArrowRight class="size-4" aria-hidden="true" /></a>}
+          {secondary && <a href={secondary.href} class="btn-ghost">{secondary.label}</a>}
+        </div>
+      )}
+      {checks.length > 0 && (
+        <ul style="--d:4" class="enter mt-10 grid gap-x-6 gap-y-3 text-sm font-medium sm:grid-cols-2">
+          {checks.map((c) => (
+            <li class="flex items-center gap-2.5">
+              <span class="grid size-5 shrink-0 place-items-center rounded-full bg-lime text-ink"><Check class="size-3" stroke-width={3} aria-hidden="true" /></span>
+              {c}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+    <div class="relative lg:col-span-6">
+      <div class="enter-media relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-line bg-surface-2 shadow-[0_40px_80px_-40px_rgb(10_26_54/0.55)]">
+        <Image
+          src={image}
+          alt={imageAlt}
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="size-full object-cover"
+          style={`object-position: ${imagePosition}`}
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" aria-hidden="true"></div>
+      </div>
+      <slot name="float" />
+    </div>
+  </div>
+</section>

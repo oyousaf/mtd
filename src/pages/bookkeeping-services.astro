@@ -1,0 +1,56 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import OfferBanner from '@/components/OfferBanner.astro';
+import Steps from '@/components/Steps.astro';
+import ServiceDetail from '@/components/ServiceDetail.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import hero from '@/assets/photos/site-laptop.webp';
+import freeagent from '@/assets/photos/freeagent-laptop.webp';
+---
+<Base
+  title="Bookkeeping Services"
+  description="Simple, affordable bookkeeping for builders and tradespeople from £20 a month, using FreeAgent and bank feeds to keep you MTD-ready and HMRC compliant."
+>
+  <PageHero
+    eyebrow="Bookkeeping services"
+    title="Bookkeeping services for builders and tradespeople"
+    lede="Simple, affordable bookkeeping to keep you compliant, save you time and let you get on with the job."
+    image={hero}
+    imageAlt="A builder working through paperwork on a laptop at a building site"
+    imagePosition="85% center"
+    primary={{ href: '/contact#enquiry', label: 'Get started' }}
+    secondary={{ href: '/pricing', label: 'See pricing' }}
+    checks={['Keep your records in order', 'Stay HMRC compliant', 'Save time and reduce stress', 'Fixed monthly prices from £20']}
+  />
+
+  <OfferBanner items={['Setup and FreeAgent access', 'Get your records organised', 'Specialist CIS support', 'Friendly, specialist support']} />
+
+  <Steps
+    eyebrow="How it works"
+    title="How our bookkeeping service works"
+    steps={[
+      { title: 'You provide access', text: 'We set up a secure connection to your business bank account and FreeAgent, so your transactions are brought in automatically.' },
+      { title: 'We organise your records', text: 'We categorise your income and expenses, ready for your quarterly MTD updates and year end.' },
+      { title: 'You stay updated', text: 'We keep your records in order and let you know if we need anything from you.' },
+      { title: 'We support you', text: 'Ongoing help and advice from someone who understands the building trade and HMRC requirements.' },
+    ]}
+  />
+
+  <ServiceDetail
+    title="Straightforward, reliable bookkeeping"
+    intro="We provide bookkeeping for self-employed builders, tradespeople and CIS subcontractors, using FreeAgent and bank feeds to keep your records up to date and ready for Making Tax Digital. We can also help eligible clients get started with suitable business banking, including NatWest, RBS or Mettle, subject to the provider’s terms and approval."
+    image={freeagent}
+    imageAlt="A laptop showing FreeAgent bookkeeping software"
+    included={[
+      'Setup and connection to FreeAgent',
+      'Import and categorise your transactions',
+      'Quarterly MTD updates',
+      'Keep you HMRC compliant',
+      'Ongoing support and advice',
+      'Year-end records ready for your accountant or self-assessment',
+    ]}
+  />
+
+  <div class="pt-20"><CtaBand /></div>
+</Base>

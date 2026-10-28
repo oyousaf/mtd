@@ -1,0 +1,81 @@
+---
+import { Award, BadgeCheck, HardHat, Landmark } from '@lucide/astro';
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Checklist from '@/components/Checklist.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import hero from '@/assets/photos/advisor-desk.webp';
+import { site } from '@/data/site';
+
+const credentials = [
+  { icon: Award, title: 'FreeAgent Accredited Practitioner', text: 'I’m a FreeAgent Accredited Practitioner, with specialist knowledge of the software.' },
+  { icon: Landmark, title: 'FreeAgent Partner Practice', text: 'I’m part of the FreeAgent Partner Practice programme and can help eligible clients with suitable business banking, including NatWest, RBS or Mettle, subject to the provider’s terms and approval.' },
+  { icon: BadgeCheck, title: 'Making Tax Digital ready', text: 'I provide bookkeeping and reporting to keep you compliant with Making Tax Digital for Income Tax.' },
+  { icon: HardHat, title: 'Focused on tradespeople', text: 'I work with sole traders and CIS subcontractors, giving practical support and clear advice in plain English.' },
+];
+---
+<Base
+  title="About Us"
+  description="Meet Steven Ambrose, founder of MTD Trade Books: a FreeAgent Accredited Practitioner offering friendly, straightforward bookkeeping for tradespeople."
+>
+  <PageHero
+    eyebrow="About MTD Trade Books"
+    title="Bookkeeping by someone who knows the trade"
+    lede="Reliable, friendly and straightforward bookkeeping for tradespeople, helping you stay organised, compliant and stress-free."
+    image={hero}
+    imageAlt="A friendly bookkeeper smiling at his desk with a laptop"
+    imagePosition="75% center"
+    primary={{ href: '/contact', label: 'Get in touch' }}
+    checks={['Bookkeeping for tradespeople', 'Friendly and personal support', 'Modern cloud bookkeeping', 'Focused on MTD compliance']}
+  />
+
+  <section class="border-y border-line bg-surface py-20 lg:py-28">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Who I am</p>
+        <h2 class="reveal mt-5 text-[clamp(2rem,4.4vw,3.5rem)] leading-[1] font-extrabold">Hi, I’m {site.founder}, founder of MTD Trade Books.</h2>
+        <div class="reveal mt-8 grid gap-5 text-lg text-muted">
+          <p>I started MTD Trade Books to provide a simple, affordable and reliable bookkeeping service for tradespeople, so you can focus on running your business while I take care of the numbers.</p>
+          <p>I understand the challenges of running a trade business and the importance of clear, accurate records, especially with the changes brought in by Making Tax Digital.</p>
+          <p>My aim is to give you straightforward advice, personal support and a service that makes bookkeeping easy and stress-free.</p>
+        </div>
+      </div>
+      <aside class="reveal self-start rounded-[1.75rem] bg-ink p-7 text-plaster sm:p-9 lg:col-span-5 dark:border dark:border-line">
+        <h2 class="text-2xl font-extrabold">Why work with us?</h2>
+        <Checklist
+          class="mt-6"
+          items={[
+            'Specialist in tradespeople and CIS subcontractors',
+            'Simple, fixed and transparent pricing',
+            'Support with Making Tax Digital for Income Tax',
+            'FreeAgent bookkeeping and business banking guidance',
+            'Friendly, responsive support when you need it',
+            'Clear communication in plain English',
+            'Save time and let us handle the paperwork',
+          ]}
+        />
+      </aside>
+    </div>
+  </section>
+
+  <section class="wrap py-20 lg:py-28">
+    <SectionHeading eyebrow="Experience and credentials" title="Accredited, specialist and MTD ready" />
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2">
+      {credentials.map(({ icon: Icon, title, text }) => (
+        <li class="reveal card group flex gap-5 p-7 transition hover:border-orange/60">
+          <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-orange text-ink transition group-hover:rotate-[-6deg]"><Icon class="size-6" aria-hidden="true" /></span>
+          <span>
+            <h3 class="text-xl font-bold">{title}</h3>
+            <p class="mt-2 text-muted">{text}</p>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <CtaBand
+    title="Let’s work together"
+    text="Whether you’re a sole trader, CIS subcontractor or just looking for a trusted bookkeeping partner, I’d be happy to discuss how MTD Trade Books can help you."
+  />
+</Base>

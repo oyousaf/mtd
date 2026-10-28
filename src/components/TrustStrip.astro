@@ -1,0 +1,19 @@
+---
+import { BadgeCheck, HardHat, Handshake, PoundSterling } from '@lucide/astro';
+const items = [
+  { icon: BadgeCheck, label: 'Making Tax Digital ready' },
+  { icon: HardHat, label: 'Specialist in the building trade' },
+  { icon: PoundSterling, label: 'Fixed monthly prices' },
+  { icon: Handshake, label: 'Friendly, personal support' },
+];
+---
+<section aria-label="Why MTD Trade Books" class="border-y border-line bg-surface">
+  <ul class="wrap grid grid-cols-2 gap-px lg:grid-cols-4">
+    {items.map(({ icon: Icon, label }) => (
+      <li class="flex items-center gap-3 py-5 text-sm font-semibold sm:text-base lg:justify-center">
+        <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-ink text-lime dark:bg-surface-2"><Icon class="size-5" aria-hidden="true" /></span>
+        {label}
+      </li>
+    ))}
+  </ul>
+</section>

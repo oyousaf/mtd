@@ -1,0 +1,159 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { AlarmClock, ArrowRight, ArrowUpRight, Check, Coins, Handshake, Wrench } from '@lucide/astro';
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import TrustStrip from '@/components/TrustStrip.astro';
+import OfferBanner from '@/components/OfferBanner.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import PricingGrid from '@/components/PricingGrid.astro';
+import MtdChecker from '@/components/MtdChecker.tsx';
+import CtaBand from '@/components/CtaBand.astro';
+import PostCard from '@/components/PostCard.astro';
+import hero from '@/assets/photos/site-tablet.webp';
+import timber from '@/assets/photos/timber-framing.webp';
+import cis from '@/assets/photos/cis-vest.webp';
+import hmrc from '@/assets/photos/hmrc-laptop.webp';
+
+const posts = (await getCollection('blog')).sort((a, b) => +b.data.pubDate - +a.data.pubDate).slice(0, 3);
+
+const reasons = [
+  { icon: Wrench, title: 'Practical support for tradespeople', text: 'We understand the realities of working on site and offer practical, down-to-earth support.' },
+  { icon: Coins, title: 'Affordable, clear pricing', text: 'Ongoing bookkeeping from £20 a month and catch-up help from £99. No hidden fees.' },
+  { icon: Handshake, title: 'Personal service', text: 'Deal directly with someone who understands builders and CIS subcontractors, not a large, impersonal company.' },
+];
+---
+<Base
+  title="Home"
+  description="Simple, affordable bookkeeping for builders, tradespeople and CIS subcontractors from £20 a month. Get MTD-ready for April 2027 for a £20 one-off setup fee."
+>
+  <PageHero
+    eyebrow="Accounting for the real world"
+    title="Bookkeeping for builders, tradespeople <span class='text-orange'>&amp;</span> CIS subcontractors"
+    lede="Keep your records organised, stay compliant with HMRC and let us take care of the bookkeeping, so you can focus on the job."
+    image={hero}
+    imageAlt="A builder in a hard hat and hi-vis checking his books on a tablet on site"
+    imagePosition="78% center"
+    primary={{ href: '/contact#enquiry', label: 'Get started for £20' }}
+    secondary={{ href: '/bookkeeping-services', label: 'View our services' }}
+  >
+    <Fragment slot="float">
+      <div class="enter absolute -bottom-6 left-4 sm:left-6" style="--d:7">
+      <div class="flex items-center gap-3 rounded-2xl border border-line bg-surface/90 p-3 pr-5 shadow-xl backdrop-blur-xl motion-safe:animate-[float_6s_ease-in-out_infinite]">
+        <span class="grid size-10 place-items-center rounded-xl bg-lime text-ink"><Check class="size-5" stroke-width={3} aria-hidden="true" /></span>
+        <span class="text-sm leading-tight"><span class="block font-semibold">Quarterly update sent</span><span class="font-mono text-xs text-muted">HMRC · MTD for Income Tax</span></span>
+      </div>
+      </div>
+      <div class="enter absolute -top-5 right-4 rotate-6 rounded-2xl bg-orange px-4 py-3 text-ink shadow-xl sm:right-8" style="--d:8">
+        <span class="block font-mono text-[0.65rem] font-semibold tracking-widest uppercase">From</span>
+        <span class="mono-num text-4xl leading-none font-medium">£20</span><span class="text-sm font-semibold">/mo</span>
+      </div>
+    </Fragment>
+  </PageHero>
+
+  <TrustStrip />
+
+  <div class="pt-14"><OfferBanner /></div>
+
+  <!-- Services bento -->
+  <section class="wrap py-20 lg:py-28">
+    <SectionHeading
+      eyebrow="What we do"
+      title="Bookkeeping that works for builders"
+      lede="We help self-employed builders, tradespeople and CIS subcontractors keep their books in order, stay compliant with HMRC and save time."
+    />
+    <div class="mt-12 grid auto-rows-[minmax(15rem,auto)] gap-4 md:grid-cols-6">
+      <a href="/bookkeeping-services" class="reveal group relative overflow-hidden rounded-[1.75rem] bg-ink text-plaster md:col-span-4 md:row-span-2">
+        <Image src={timber} alt="" widths={[640, 1024, 1400]} sizes="(min-width: 768px) 66vw, 100vw" class="absolute inset-0 size-full object-cover transition duration-700 ease-out-expo group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
+        <div class="relative flex h-full min-h-[26rem] flex-col justify-end p-7 sm:p-9">
+          <span class="font-mono text-xs tracking-[0.18em] text-lime uppercase">01 · From £20 a month</span>
+          <h3 class="mt-3 text-4xl font-extrabold sm:text-5xl">Bookkeeping services</h3>
+          <p class="mt-3 max-w-md text-plaster/80">Monthly bookkeeping from £20 a month. Stay on top of your records and focus on the job.</p>
+          <span class="mt-6 inline-flex items-center gap-2 font-semibold">Find out more <ArrowUpRight class="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" /></span>
+        </div>
+      </a>
+      <a href="/cis-subcontractors" class="reveal group relative overflow-hidden rounded-[1.75rem] bg-navy text-plaster md:col-span-2">
+        <Image src={cis} alt="" widths={[480, 800]} sizes="(min-width: 768px) 33vw, 100vw" class="absolute inset-0 size-full object-cover object-top opacity-70 transition duration-700 ease-out-expo group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/40 to-transparent"></div>
+        <div class="relative flex h-full flex-col justify-end p-7">
+          <span class="font-mono text-xs tracking-[0.18em] text-lime uppercase">02</span>
+          <h3 class="mt-2 text-2xl font-extrabold">CIS subcontractors</h3>
+          <p class="mt-2 text-sm text-plaster/80">Specialist support to keep your records accurate and HMRC compliant.</p>
+        </div>
+      </a>
+      <a href="/making-tax-digital" class="reveal group relative overflow-hidden rounded-[1.75rem] bg-navy text-plaster md:col-span-2">
+        <Image src={hmrc} alt="" widths={[480, 800]} sizes="(min-width: 768px) 33vw, 100vw" class="absolute inset-0 size-full object-cover opacity-60 transition duration-700 ease-out-expo group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/40 to-transparent"></div>
+        <div class="relative flex h-full flex-col justify-end p-7">
+          <span class="font-mono text-xs tracking-[0.18em] text-lime uppercase">03</span>
+          <h3 class="mt-2 text-2xl font-extrabold">Making Tax Digital</h3>
+          <p class="mt-2 text-sm text-plaster/80">Practical help with MTD for Income Tax. Get ready for April 2027.</p>
+        </div>
+      </a>
+      <a href="/pricing" class="reveal group card flex flex-col justify-between p-7 transition hover:border-orange md:col-span-3">
+        <AlarmClock class="size-8 text-orange" aria-hidden="true" />
+        <div>
+          <h3 class="text-2xl font-extrabold">Missed your MTD deadline?</h3>
+          <p class="mt-2 text-muted">Don’t worry. We can help you get back on track, understand any penalties and set up your records properly. Catch-up from £99.</p>
+          <span class="mt-4 inline-flex items-center gap-2 font-semibold text-orange-deep dark:text-orange">Get help now <ArrowRight class="size-4" aria-hidden="true" /></span>
+        </div>
+      </a>
+      <a href="/for-accountants" class="reveal group card blueprint flex flex-col justify-between p-7 transition hover:border-orange md:col-span-3">
+        <span class="font-mono text-xs tracking-[0.18em] text-muted uppercase">For accountancy practices</span>
+        <div>
+          <h3 class="text-2xl font-extrabold">Your trusted bookkeeping partner</h3>
+          <p class="mt-2 text-muted">Hand us the bookkeeping for your construction clients. You keep the client relationship and the year-end.</p>
+          <span class="mt-4 inline-flex items-center gap-2 font-semibold text-orange-deep dark:text-orange">Work with us <ArrowRight class="size-4" aria-hidden="true" /></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Why choose -->
+  <section class="border-y border-line bg-surface py-20 lg:py-24">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <SectionHeading eyebrow="Why choose us" title="Why choose MTD Trade Books?" lede="Straightforward bookkeeping from someone who understands the building trade." />
+      </div>
+      <ul class="grid gap-4 sm:grid-cols-3 lg:col-span-8">
+        {reasons.map(({ icon: Icon, title, text }) => (
+          <li class="reveal rounded-[1.5rem] border border-line bg-bg p-6">
+            <Icon class="size-8 text-orange" aria-hidden="true" />
+            <h3 class="mt-6 text-xl font-bold">{title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="wrap py-20 lg:py-28">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <SectionHeading eyebrow="Our pricing" title="Get ready for Making Tax Digital from April 2027" lede="Choose the support you need. Simple, fixed prices with no hidden fees." />
+      <a href="/pricing" class="btn-ghost shrink-0">View full pricing <ArrowRight class="size-4" aria-hidden="true" /></a>
+    </div>
+    <div class="mt-14"><PricingGrid /></div>
+  </section>
+
+  <!-- MTD checker -->
+  <section class="wrap pb-20 lg:pb-28">
+    <SectionHeading eyebrow="Quick check" title="When does MTD start for you?" lede="Slide to your rough yearly income to see when Making Tax Digital applies." class="mb-10" />
+    <div class="reveal"><MtdChecker client:visible /></div>
+  </section>
+
+  <!-- Blog -->
+  <section class="wrap pb-24">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <SectionHeading eyebrow="From the blog" title="Plain-English MTD guides" />
+      <a href="/blog" class="btn-ghost shrink-0">All articles <ArrowRight class="size-4" aria-hidden="true" /></a>
+    </div>
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

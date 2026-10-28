@@ -1,0 +1,64 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { ArrowLeft } from '@lucide/astro';
+import Base from '@/layouts/Base.astro';
+import PostCard from '@/components/PostCard.astro';
+import BlogCover from '@/components/BlogCover.astro';
+import CtaBand from '@/components/CtaBand.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<'blog'> };
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
+const date = post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const related = (await getCollection('blog')).filter((p) => p.id !== post.id).sort((a, b) => +b.data.pubDate - +a.data.pubDate).slice(0, 3);
+---
+<Base title={post.data.title} description={post.data.description} image={post.data.ogImage.src}>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <article>
+    <header class="wrap pt-12 lg:pt-16">
+      <a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-fg"><ArrowLeft class="size-4" aria-hidden="true" /> All articles</a>
+      <h1 style="--d:1" class="enter mt-6 max-w-4xl text-[clamp(2.2rem,5vw,4rem)] leading-[1] font-extrabold">{post.data.title}</h1>
+      <p style="--d:2" class="enter mt-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs tracking-wider text-muted uppercase">
+        <span>{post.data.author}</span><span aria-hidden="true">·</span>
+        <time datetime={post.data.pubDate.toISOString()}>{date}</time><span aria-hidden="true">·</span>
+        <span>{post.data.readingTime} min read</span>
+      </p>
+      <div class="mt-10 overflow-hidden rounded-[2rem] border border-line [&_.cover]:aspect-[16/10] sm:[&_.cover]:aspect-[21/9]" transition:name={`cover-${post.id}`}>
+        <BlogCover post={post} />
+      </div>
+    </header>
+
+    <div class="wrap grid gap-12 py-14 lg:grid-cols-12">
+      {toc.length > 0 && (
+        <nav aria-label="On this page" class="lg:col-span-3">
+          <div class="lg:sticky lg:top-28">
+            <p class="font-mono text-xs tracking-[0.18em] text-muted uppercase">On this page</p>
+            <ol class="mt-4 grid gap-2.5 border-l border-line text-sm">
+              {toc.map((h) => (
+                <li><a href={`#${h.slug}`} class="-ml-px block border-l-2 border-transparent pl-4 text-muted transition hover:border-orange hover:text-fg">{h.text}</a></li>
+              ))}
+            </ol>
+          </div>
+        </nav>
+      )}
+      <div class="prose prose-lg max-w-none lg:col-span-8 prose-headings:font-display prose-headings:font-extrabold prose-headings:tracking-tight prose-h2:text-3xl prose-a:text-orange-deep prose-a:decoration-2 prose-a:underline-offset-4 prose-strong:text-fg prose-li:marker:text-orange dark:prose-invert dark:prose-a:text-orange [--tw-prose-body:var(--fg)] [--tw-prose-headings:var(--fg)]">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <section class="wrap pb-24">
+    <h2 class="text-3xl font-extrabold">Keep reading</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      {related.map((p) => <PostCard post={p} />)}
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

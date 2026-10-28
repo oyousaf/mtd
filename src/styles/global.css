@@ -1,0 +1,290 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --bg: #f5f2ec;
+  --surface: #ffffff;
+  --surface-2: #ece7de;
+  --fg: #0a1a36;
+  --muted: #545d6e;
+  --line: #d9d2c5;
+  --grid: rgb(46 107 255 / 0.07);
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #07142b;
+  --surface: #0f2142;
+  --surface-2: #142a52;
+  --fg: #f5f2ec;
+  --muted: #a3acbd;
+  --line: #22396a;
+  --grid: rgb(120 160 255 / 0.08);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+}
+
+@theme {
+  --color-ink: #0a1a36;
+  --color-navy: #132b57;
+  --color-orange: #ff5b1f;
+  --color-orange-deep: #e5470c;
+  --color-lime: #d8f23a;
+  --color-plaster: #f5f2ec;
+  --color-blueprint: #2e6bff;
+  --color-concrete: #8b9099;
+
+  --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-balance;
+    font-variation-settings: 'opsz' 96;
+    letter-spacing: -0.025em;
+  }
+  p { @apply text-pretty; }
+  ::selection { @apply bg-lime text-ink; }
+  :focus-visible {
+    outline: 3px solid var(--color-lime);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@utility wrap { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+
+@utility eyebrow {
+  @apply inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.14em] text-orange-deep uppercase dark:text-orange;
+  &::before {
+    content: '';
+    @apply size-1.5 rounded-full bg-current;
+  }
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[0.95rem] font-semibold transition-[translate,scale,background-color,box-shadow,border-color,color] duration-500 ease-out-expo active:scale-[0.97] active:duration-150;
+  & svg { transition: translate 0.5s var(--ease-out-expo); }
+  &:hover .lucide-arrow-right { translate: 3px 0; }
+}
+@utility btn-primary {
+  @apply btn bg-orange text-ink shadow-[0_8px_24px_-8px_rgb(255_91_31/0.6)] hover:-translate-y-0.5 hover:bg-[#ff6d36];
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-surface/60 text-fg backdrop-blur hover:border-fg/40;
+}
+@utility btn-dark {
+  @apply btn bg-ink text-plaster hover:bg-navy dark:bg-plaster dark:text-ink dark:hover:bg-white;
+}
+
+@utility card { @apply rounded-[1.75rem] border border-line bg-surface; }
+
+/* Faint blueprint grid used behind sections */
+@utility blueprint {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@utility mono-num {
+  @apply font-mono tabular-nums;
+  letter-spacing: -0.04em;
+}
+
+/* ───────────── Motion ─────────────
+   Everything below is progressive: no-preference only, and scroll-driven
+   effects fall back to static where unsupported. */
+
+:root { interpolate-size: allow-keywords; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+
+  /* Page-load entrance, staggered with --d */
+  .enter {
+    animation: enter 1s var(--ease-out-expo) both;
+    animation-delay: calc(var(--d, 0) * 70ms + 60ms);
+  }
+  .enter-media {
+    animation: enter-media 1.2s var(--ease-out-expo) both;
+    animation-delay: 160ms;
+  }
+
+  /* Mobile call bar slides up once, then persists across pages */
+  .call-bar { animation: call-bar-in 0.8s var(--ease-out-expo) 0.5s both; }
+
+  .cover-art { transition: scale 0.8s var(--ease-out-expo); }
+  .group:hover .cover-art { scale: 1.045; }
+}
+
+@keyframes enter {
+  from { opacity: 0; translate: 0 22px; filter: blur(6px); }
+}
+@keyframes enter-media {
+  from { opacity: 0; clip-path: inset(6% 6% 6% 6% round 2rem); scale: 1.03; }
+  to { clip-path: inset(0 0 0 0 round 0); }
+}
+@keyframes call-bar-in {
+  from { opacity: 0; translate: 0 120%; }
+}
+
+/* Scroll-driven reveal */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal both var(--ease-out-expo);
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+@keyframes reveal {
+  from { opacity: 0; translate: 0 36px; }
+}
+
+/* Header firms up as the page scrolls */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .header-bar {
+      animation: header-solid linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 140px;
+    }
+  }
+}
+@keyframes header-solid {
+  from {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+}
+
+/* FAQ accordions open smoothly */
+details::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition: block-size 0.5s var(--ease-out-expo), content-visibility 0.5s allow-discrete;
+}
+details[open]::details-content { block-size: auto; }
+@media (prefers-reduced-motion: reduce) {
+  details::details-content { transition: none; }
+}
+
+/* Mobile menu: circular reveal from the menu button, staggered links */
+html:has(#mobile-menu[open]) { overflow: hidden; }
+#mobile-menu[open] { animation: menu-in 0.7s var(--ease-out-expo) both; }
+#mobile-menu[data-closing] { animation: menu-out 0.45s cubic-bezier(0.7, 0, 0.84, 0) both; }
+#mobile-menu[open] .menu-item {
+  animation: menu-item-in 0.7s var(--ease-out-expo) both;
+  animation-delay: calc(140ms + var(--i, 0) * 40ms);
+}
+#mobile-menu[data-closing] .menu-item { animation: menu-item-out 0.25s ease-in both; }
+#mobile-menu[open] .menu-close { animation: menu-close-in 0.6s var(--ease-out-expo) 0.2s both; }
+
+@keyframes menu-in {
+  from { clip-path: circle(0 at var(--ox, 100%) var(--oy, 0)); }
+  to { clip-path: circle(150vmax at var(--ox, 100%) var(--oy, 0)); }
+}
+@keyframes menu-out {
+  from { clip-path: circle(150vmax at var(--ox, 100%) var(--oy, 0)); }
+  to { clip-path: circle(0 at var(--ox, 100%) var(--oy, 0)); }
+}
+@keyframes menu-item-in {
+  from { opacity: 0; translate: 0 26px; }
+}
+@keyframes menu-item-out {
+  to { opacity: 0; translate: 0 -10px; }
+}
+@keyframes menu-close-in {
+  from { opacity: 0; rotate: -90deg; scale: 0.6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #mobile-menu[open] { animation: fade-in 0.2s ease both; }
+  #mobile-menu[data-closing] { animation: menu-out-fade 0.2s ease both; }
+  #mobile-menu .menu-item, #mobile-menu .menu-close { animation: none !important; }
+}
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes menu-out-fade { to { opacity: 0; } }
+
+/* Page transitions (wired up via transition:animate on <html>) */
+@keyframes page-out {
+  to { opacity: 0; translate: 0 -10px; }
+}
+@keyframes page-in {
+  from { opacity: 0; translate: 0 16px; }
+}
+
+/* Theme switch: circular reveal from the toggle */
+/* Astro names <html> for page transitions; reset it to root while switching theme */
+html.theme-switching { view-transition-name: root !important; }
+html.theme-switching * { view-transition-name: none !important; }
+html.theme-switching::view-transition-old(root) { animation: none; }
+html.theme-switching::view-transition-new(root) {
+  animation: theme-reveal 0.7s var(--ease-out-expo);
+}
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--tx, 50%) var(--ty, 0)); }
+  to { clip-path: circle(150vmax at var(--tx, 50%) var(--ty, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
+/* Tape-measure reading progress bar on blog posts */
+.read-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: 6px;
+  transform-origin: left;
+  transform: scaleX(0);
+  background:
+    repeating-linear-gradient(90deg, var(--color-ink) 0 1px, transparent 1px 10px) bottom / 100% 3px no-repeat,
+    var(--color-lime);
+}
+@supports (animation-timeline: scroll()) {
+  .read-progress {
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes progress {
+  to { transform: scaleX(1); }
+}
+
+@keyframes float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}

@@ -1,0 +1,28 @@
+---
+import { ArrowRight, Phone } from '@lucide/astro';
+import { site } from '@/data/site';
+interface Props { title?: string; text?: string; label?: string; href?: string }
+const {
+  title = 'Get your bookkeeping sorted today',
+  text = 'Friendly, specialist support for builders, tradespeople and CIS subcontractors.',
+  label = 'Get in touch',
+  href = '/contact',
+} = Astro.props;
+---
+<section class="wrap">
+  <div class="reveal relative overflow-hidden rounded-[2rem] bg-orange px-6 py-14 text-ink sm:px-12 lg:py-16">
+    <svg class="absolute -right-10 hidden lg:block -bottom-10 h-[130%] opacity-[0.08]" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="13" y="38" width="9" height="13" rx="2" /><rect x="27.5" y="29" width="9" height="22" rx="2" /><rect x="42" y="19" width="9" height="32" rx="2" />
+    </svg>
+    <div class="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-2xl">
+        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] leading-[0.95] font-extrabold">{title}</h2>
+        <p class="mt-4 text-lg text-ink/80">{text}</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href={href} class="btn-dark !bg-ink !text-plaster">{label} <ArrowRight class="size-4" aria-hidden="true" /></a>
+        <a href={site.phoneHref} class="btn border border-ink/25 hover:bg-ink/5"><Phone class="size-4" aria-hidden="true" /> {site.phone}</a>
+      </div>
+    </div>
+  </div>
+</section>

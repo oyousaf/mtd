@@ -1,0 +1,95 @@
+---
+import { HardHat, PoundSterling, ShieldCheck, Wrench } from '@lucide/astro';
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import OfferBanner from '@/components/OfferBanner.astro';
+import Steps from '@/components/Steps.astro';
+import ServiceDetail from '@/components/ServiceDetail.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import hero from '@/assets/photos/cis-vest.webp';
+import statement from '@/assets/photos/cis-statement.webp';
+
+const strip = [
+  { icon: HardHat, label: 'We understand CIS deductions' },
+  { icon: PoundSterling, label: 'Simple, fixed pricing' },
+  { icon: ShieldCheck, label: 'HMRC-compliant bookkeeping' },
+  { icon: Wrench, label: 'Support from someone in the trade' },
+];
+---
+<Base
+  title="CIS Subcontractors"
+  description="Specialist bookkeeping for CIS subcontractors: record gross income and CIS deductions, track expenses and stay MTD-ready from £20 a month."
+>
+  <PageHero
+    eyebrow="Specialist bookkeeping for the building trade"
+    title="Bookkeeping for CIS subcontractors"
+    lede="Specialist bookkeeping to keep you compliant, track your income and expenses, and make life easier at tax time."
+    image={hero}
+    imageAlt="A subcontractor in a CIS hi-vis vest and hard hat on a timber-frame site"
+    imagePosition="center 30%"
+    primary={{ href: '/contact#enquiry', label: 'Get started' }}
+    secondary={{ href: '/blog/mtd-cis-subcontractors-records', label: 'Read the CIS guide' }}
+    checks={['Track CIS income and deductions', 'Know what you’ll get paid', 'Stay HMRC compliant', 'Save time and reduce stress']}
+  />
+
+  <OfferBanner items={['Setup and FreeAgent access', 'Get your records organised', 'Specialist CIS support', 'Friendly, specialist support']} />
+
+  <Steps
+    eyebrow="How we help"
+    title="How we help CIS subcontractors"
+    steps={[
+      { title: 'Record your income', text: 'We record the payments you receive from contractors, including the CIS deductions.' },
+      { title: 'Track your expenses', text: 'We categorise your business expenses, so you know your true profit and what you can claim.' },
+      { title: 'Keep you compliant', text: 'We help you stay on top of CIS requirements and get your records ready for MTD when it applies to you.' },
+      { title: 'Ongoing support', text: 'We’re here to answer your questions and keep your bookkeeping in order throughout the year.' },
+    ]}
+  />
+
+  <section class="wrap pb-20">
+    <div class="reveal grid gap-8 rounded-[2rem] border border-line bg-surface p-6 sm:p-10 lg:grid-cols-2 lg:items-center">
+      <div>
+        <p class="eyebrow">Why it matters</p>
+        <h2 class="mt-4 text-3xl font-extrabold sm:text-4xl">What lands in your bank isn’t what you earned</h2>
+        <p class="mt-4 text-muted">
+          When a contractor deducts CIS tax, your bank shows less than you actually earned. MTD needs your <strong class="text-fg">gross</strong> income, so we record both figures, and the deductions count towards your tax bill.
+        </p>
+      </div>
+      <dl class="grid gap-3 font-mono text-sm">
+        <div class="flex items-center justify-between rounded-2xl bg-bg px-5 py-4"><dt>Labour invoiced</dt><dd class="text-2xl tabular-nums">£1,000</dd></div>
+        <div class="flex items-center justify-between rounded-2xl bg-bg px-5 py-4 text-orange-deep dark:text-orange"><dt>CIS deduction (20%)</dt><dd class="text-2xl tabular-nums">−£200</dd></div>
+        <div class="flex items-center justify-between rounded-2xl bg-ink px-5 py-4 text-plaster dark:bg-surface-2"><dt>Paid into your bank</dt><dd class="text-2xl text-lime tabular-nums">£800</dd></div>
+        <p class="px-1 pt-1 font-sans text-xs text-muted">Illustration only. The £200 is credited against your year-end tax bill.</p>
+      </dl>
+    </div>
+  </section>
+
+  <ServiceDetail
+    title="Reliable bookkeeping for CIS subcontractors"
+    intro="We use cloud software to keep your records up to date and ready for Making Tax Digital when it applies to you."
+    image={statement}
+    imageAlt="A CIS statement with a calculator and pen"
+    included={[
+      'Record CIS income and deductions',
+      'Categorise your business expenses',
+      'Monthly bookkeeping and quarterly MTD updates (when required)',
+      'Keep records ready for MTD (when required)',
+      'Ongoing support and advice',
+      'Year-end records ready for your self-assessment (if required)',
+    ]}
+  />
+
+  <section aria-label="Why subcontractors choose us" class="wrap py-16">
+    <ul class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {strip.map(({ icon: Icon, label }) => (
+        <li class="reveal card flex flex-col gap-4 p-6 font-semibold"><Icon class="size-7 text-orange" aria-hidden="true" />{label}</li>
+      ))}
+    </ul>
+  </section>
+
+  <CtaBand
+    title="Starting Making Tax Digital in April 2027?"
+    text="Get everything set up now for a £20 one-off enrolment. No monthly bookkeeping payments until April 2027."
+    label="Get started for £20"
+    href="/contact#enquiry"
+  />
+</Base>

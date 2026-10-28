@@ -1,0 +1,94 @@
+---
+import { Building, Clock, FileCheck, HardHat, MessagesSquare, Receipt, ShieldCheck, Users } from '@lucide/astro';
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Steps from '@/components/Steps.astro';
+import Checklist from '@/components/Checklist.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import hero from '@/assets/photos/accountant-meeting.webp';
+
+const why = [
+  { icon: HardHat, text: 'Specialist in the building trade and CIS' },
+  { icon: FileCheck, text: 'Helps you manage MTD requirements for your clients' },
+  { icon: ShieldCheck, text: 'Reliable, accurate, HMRC-compliant records using FreeAgent' },
+  { icon: MessagesSquare, text: 'Clear communication and regular updates' },
+  { icon: Receipt, text: 'Flexible invoicing: you invoice your client, or we can' },
+  { icon: Users, text: 'We won’t approach your clients to offer accountancy services' },
+  { icon: Clock, text: 'Outsourced bookkeeping to free up your team’s time' },
+  { icon: Building, text: 'A trusted, long-term partner for your practice' },
+];
+---
+<Base
+  title="For Accountants"
+  description="Outsourced, MTD-ready bookkeeping for accountancy practices with construction and trade clients. You keep the client relationship and the year-end."
+>
+  <PageHero
+    eyebrow="For accountancy practices"
+    title="Your trusted bookkeeping partner for your clients"
+    lede="Take the bookkeeping workload off your team with a reliable, HMRC-compliant service for your self-employed construction and trade clients, while you keep the client relationship."
+    image={hero}
+    imageAlt="An accountant and a tradesperson in hi-vis reviewing figures together at a desk"
+    imagePosition="80% center"
+    primary={{ href: '/contact#enquiry', label: 'Work with us' }}
+    checks={['Your clients remain your clients', 'Save time and capacity', 'HMRC-compliant bookkeeping', 'Flexible working arrangements']}
+  />
+
+  <section class="border-y border-line bg-surface py-20 lg:py-28">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <SectionHeading
+          eyebrow="Partnership"
+          title="Bookkeeping and MTD support, without the competition"
+          lede="We work in partnership with accountancy firms to provide bookkeeping and MTD support for your self-employed builders, tradespeople and CIS subcontractors."
+        />
+        <div class="reveal mt-8 rounded-[1.5rem] border-l-4 border-orange bg-bg p-6">
+          <p class="font-display text-xl leading-snug font-bold">
+            “You keep responsibility for year-end accounts, tax returns and wider advice. We don’t approach your clients to offer competing accountancy services.”
+          </p>
+        </div>
+      </div>
+      <ul class="grid gap-3 sm:grid-cols-2 lg:col-span-7">
+        {why.map(({ icon: Icon, text }) => (
+          <li class="reveal flex items-start gap-4 rounded-[1.25rem] border border-line bg-bg p-5">
+            <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-ink text-lime dark:bg-surface-2"><Icon class="size-5" aria-hidden="true" /></span>
+            <span class="pt-2 font-medium">{text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Steps
+    eyebrow="How it works"
+    title="A simple, five-step partnership"
+    steps={[
+      { title: 'You refer your client', text: 'Send us the client details and let us know how you’d like to work together.' },
+      { title: 'We set them up', text: 'We use FreeAgent and help eligible clients get started with suitable business banking, including NatWest, RBS or Mettle.' },
+      { title: 'We do the bookkeeping', text: 'We keep their records up to date and submit quarterly MTD updates (when required).' },
+      { title: 'We stay in touch', text: 'We keep you informed and provide records and reports as agreed.' },
+      { title: 'You handle the year-end', text: 'You keep responsibility for year-end accounts, tax returns and any advisory work.' },
+    ]}
+  />
+
+  <section class="wrap pb-20">
+    <div class="reveal grid gap-8 rounded-[2rem] bg-ink p-7 text-plaster sm:p-10 lg:grid-cols-2 lg:items-center dark:border dark:border-line">
+      <h2 class="text-3xl leading-tight font-extrabold sm:text-4xl">What your practice gets</h2>
+      <Checklist
+        items={[
+          'Outsourced bookkeeping to free up your time',
+          'MTD-ready records and quarterly updates',
+          'Specialist knowledge of the construction industry',
+          'Reliable, responsive and easy to work with',
+          'Flexible options: you can invoice the client, or we can',
+        ]}
+      />
+    </div>
+  </section>
+
+  <CtaBand
+    title="Let’s work together"
+    text="If you have clients who need MTD-ready bookkeeping, we’d be happy to discuss how we can support you and your practice."
+    href="/contact#enquiry"
+  />
+</Base>

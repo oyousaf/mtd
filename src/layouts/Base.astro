@@ -1,0 +1,89 @@
+---
+import '@/styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import MobileCallBar from '@/components/MobileCallBar.astro';
+import { site } from '@/data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+const { title, description, image = '/og.png' } = Astro.props;
+const fullTitle = Astro.url.pathname === '/' ? `${site.name} | Bookkeeping for Builders & CIS Subcontractors` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Old page lifts away quickly, new page settles in with an expo ease
+const page = {
+  old: { name: 'page-out', duration: '0.22s', easing: 'cubic-bezier(0.4, 0, 1, 1)', fillMode: 'both' },
+  new: { name: 'page-in', duration: '0.6s', easing: 'cubic-bezier(0.16, 1, 0.3, 1)', delay: '0.1s', fillMode: 'both' },
+};
+const pageTransition = { forwards: page, backwards: page };
+---
+<!doctype html>
+<html lang="en-GB" transition:animate={pageTransition}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#f5f2ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#07142b" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      (() => {
+        const apply = () => {
+          let t;
+          try { t = localStorage.getItem('theme'); } catch {}
+          if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.dataset.theme = t;
+        };
+        apply();
+        document.addEventListener('astro:after-swap', apply);
+      })();
+    </script>
+    <ClientRouter />
+  </head>
+  <body class="min-h-dvh pb-24 sm:pb-0">
+    <a href="#main" class="sr-only z-[60] rounded-full bg-lime px-4 py-2 text-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileCallBar />
+    <script>
+      document.addEventListener('astro:page-load', () => {
+        document.querySelector('[data-theme-toggle]')?.addEventListener('click', (e) => {
+          const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+          const swap = () => {
+            document.documentElement.dataset.theme = next;
+            try { localStorage.setItem('theme', next); } catch {}
+          };
+          if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return swap();
+          // Circular reveal grows out of the toggle button
+          const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+          const root = document.documentElement;
+          root.style.setProperty('--tx', `${r.left + r.width / 2}px`);
+          root.style.setProperty('--ty', `${r.top + r.height / 2}px`);
+          root.classList.add('theme-switching');
+          document.startViewTransition(swap).finished.finally(() => root.classList.remove('theme-switching'));
+        });
+      });
+    </script>
+  </body>
+</html>

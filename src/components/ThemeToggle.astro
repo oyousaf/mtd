@@ -1,0 +1,12 @@
+---
+import { Moon, Sun } from '@lucide/astro';
+---
+<button
+  type="button"
+  data-theme-toggle
+  class="grid size-10 place-items-center rounded-full border border-line bg-surface/70 text-fg transition hover:border-fg/40"
+  aria-label="Toggle dark mode"
+>
+  <Sun class="size-[18px] dark:hidden" aria-hidden="true" />
+  <Moon class="hidden size-[18px] dark:block" aria-hidden="true" />
+</button>

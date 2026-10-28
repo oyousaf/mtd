@@ -1,0 +1,63 @@
+---
+import { Mail, MapPin, Phone } from '@lucide/astro';
+import Logo from './Logo.astro';
+import { nav, site } from '@/data/site';
+const year = new Date().getFullYear();
+---
+<footer class="relative mt-24 overflow-hidden bg-ink text-plaster">
+  <div class="blueprint absolute inset-0 opacity-60 [--grid:rgb(120_160_255/0.08)]" aria-hidden="true"></div>
+  <div class="wrap relative grid gap-12 py-16 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Logo class="[&_.text-muted]:text-plaster/60" />
+      <p class="mt-6 max-w-sm text-plaster/70">
+        Straightforward, affordable bookkeeping for builders, tradespeople and CIS subcontractors, from someone who understands the building trade.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-2 font-mono text-[0.7rem] tracking-wider uppercase">
+        <span class="rounded-full border border-plaster/15 px-3 py-1.5">FreeAgent Accredited Practitioner</span>
+        <span class="rounded-full border border-plaster/15 px-3 py-1.5">MTD ready</span>
+      </div>
+    </div>
+
+    <nav aria-label="Footer" class="lg:col-span-3">
+      <h2 class="font-mono text-xs font-medium tracking-[0.18em] text-plaster/50 uppercase">Quick links</h2>
+      <ul class="mt-4 grid grid-cols-2 gap-x-6 gap-y-2.5 text-sm lg:grid-cols-1">
+        {[...nav, { href: '/contact', label: 'Contact' }].map((item) => (
+          <li><a href={item.href} class="text-plaster/80 transition hover:text-lime">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="lg:col-span-4">
+      <h2 class="font-mono text-xs font-medium tracking-[0.18em] text-plaster/50 uppercase">Get in touch</h2>
+      <ul class="mt-4 space-y-4 text-sm">
+        <li>
+          <a href={site.phoneHref} class="group flex gap-3">
+            <Phone class="mt-0.5 size-4 text-orange" aria-hidden="true" />
+            <span><span class="block font-display text-xl font-bold group-hover:text-lime">{site.phone}</span><span class="text-plaster/60">{site.hours}</span></span>
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`} class="group flex gap-3">
+            <Mail class="mt-0.5 size-4 text-orange" aria-hidden="true" />
+            <span class="break-all group-hover:text-lime">{site.email}</span>
+          </a>
+        </li>
+        <li class="flex gap-3">
+          <MapPin class="mt-0.5 size-4 text-orange" aria-hidden="true" />
+          <span>Based in {site.location}, supporting clients UK-wide</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="relative border-t border-plaster/10">
+    <div class="wrap flex flex-col gap-2 py-6 text-xs text-plaster/50 sm:flex-row sm:justify-between">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <p>Prices shown are starting prices for sole traders.</p>
+    </div>
+  </div>
+
+  <p aria-hidden="true" class="pointer-events-none relative -mb-[0.22em] select-none text-center font-display whitespace-nowrap text-[15vw] leading-[0.8] font-extrabold tracking-tighter text-plaster/[0.04]">
+    TRADE BOOKS
+  </p>
+</footer>

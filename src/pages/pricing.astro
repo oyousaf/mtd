@@ -1,0 +1,85 @@
+---
+import { Info } from '@lucide/astro';
+import Base from '@/layouts/Base.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import PricingGrid from '@/components/PricingGrid.astro';
+import Estimator from '@/components/Estimator.tsx';
+import Checklist from '@/components/Checklist.astro';
+import TrustStrip from '@/components/TrustStrip.astro';
+import CtaBand from '@/components/CtaBand.astro';
+
+const faqs = [
+  { q: 'What’s included in the £20 enrolment?', a: 'A one-off fee covering FreeAgent setup and help connecting your bank feed. There are no monthly bookkeeping payments until April 2027.' },
+  { q: 'When does the monthly fee start?', a: 'Monthly bookkeeping starts at £20 a month from April 2027. It keeps your records organised and ready for year end, including quarterly MTD updates for eligible clients.' },
+  { q: 'Who are your prices for?', a: 'Non-VAT sole traders, builders and tradespeople, CIS subcontractors and businesses with simple, bank-only transactions. Prices shown are starting prices.' },
+  { q: 'What isn’t covered?', a: 'Payroll, limited companies and multi-property landlords aren’t included. Get in touch if you’re not sure which option is right for you.' },
+  { q: 'Is there a contract?', a: 'No long-term contract. You can cancel at any time.' },
+  { q: 'Do I pay for FreeAgent?', a: 'FreeAgent can be available at no extra subscription cost with a qualifying business bank account (NatWest, RBS or Mettle), subject to the provider’s terms and approval.' },
+];
+---
+<Base
+  title="Pricing"
+  description="Clear, fixed bookkeeping prices for builders and CIS subcontractors: £20 enrolment, £20 a month bookkeeping, catch-up from £99 and year-end support from £200."
+>
+  <section class="relative overflow-hidden">
+    <div class="blueprint absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" aria-hidden="true"></div>
+    <div class="wrap relative pt-14 pb-16 text-center lg:pt-24">
+      <p class="eyebrow enter">Simple, transparent pricing</p>
+      <h1 style="--d:1" class="enter mx-auto mt-5 max-w-4xl text-[clamp(2.6rem,6.5vw,5rem)] leading-[0.95] font-extrabold">
+        Affordable bookkeeping to get you <span class="relative whitespace-nowrap">MTD ready<svg class="absolute -bottom-2 left-0 w-full text-orange" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C 50 2, 150 2, 198 8" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" /></svg></span>
+      </h1>
+      <p style="--d:2" class="enter mx-auto mt-6 max-w-2xl text-lg text-muted sm:text-xl">Clear, fixed prices with no hidden fees. Simple support for builders, tradespeople and CIS subcontractors.</p>
+    </div>
+    <div class="wrap relative pb-20"><PricingGrid /></div>
+  </section>
+
+  <TrustStrip />
+
+  <section class="wrap py-20 lg:py-28">
+    <SectionHeading eyebrow="Build your quote" title="What will year one cost?" lede="Tick what you need for a rough first-year figure. We’ll confirm it when we speak." class="mb-10" />
+    <div class="reveal"><Estimator client:visible /></div>
+  </section>
+
+  <section class="wrap pb-20">
+    <div class="grid gap-4 lg:grid-cols-2">
+      <div class="reveal card p-7 sm:p-9">
+        <p class="eyebrow">For April 2027 starters</p>
+        <h2 class="mt-4 text-3xl font-extrabold">Important information</h2>
+        <ul class="mt-6 grid gap-4 text-muted">
+          <li><strong class="text-fg">£20 one-off enrolment and setup</strong>, including FreeAgent setup and help connecting your bank feed.</li>
+          <li><strong class="text-fg">Monthly bookkeeping from £20 a month from April 2027</strong>, including quarterly MTD updates for eligible clients.</li>
+          <li><strong class="text-fg">Catch-up bookkeeping from £99</strong>, a one-off fee charged separately.</li>
+          <li><strong class="text-fg">Year-end support from £200</strong>, charged separately.</li>
+        </ul>
+      </div>
+      <div class="reveal rounded-[1.75rem] bg-ink p-7 text-plaster sm:p-9 dark:border dark:border-line">
+        <p class="eyebrow !text-lime">Who it’s for</p>
+        <h2 class="mt-4 text-3xl font-extrabold">Our services are ideal for</h2>
+        <Checklist items={['Builders and tradespeople', 'CIS subcontractors', 'Sole traders (non-VAT)', 'Simple, bank-only transactions']} class="mt-6 text-lg" />
+        <p class="mt-8 flex gap-2 text-sm text-plaster/60"><Info class="mt-0.5 size-4 shrink-0" aria-hidden="true" /> Not included: payroll, limited companies or multi-property landlords.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap pb-24">
+    <SectionHeading eyebrow="Questions" title="Pricing FAQs" class="mb-10" />
+    <div class="grid gap-3 lg:grid-cols-2">
+      {faqs.map((f) => (
+        <details class="reveal group card p-6 open:border-orange/60" name="faq">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-bold [&::-webkit-details-marker]:hidden">
+            {f.q}
+            <span class="grid size-8 shrink-0 place-items-center rounded-full border border-line transition group-open:rotate-45 group-open:bg-orange group-open:text-ink" aria-hidden="true">+</span>
+          </summary>
+          <p class="mt-4 text-muted">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand
+    title="Don’t miss the April 2027 deadline"
+    text="Received an HMRC letter or think MTD applies to you? Get set up now for just £20. We’ll help you stay on track and meet your obligations."
+    label="Enrol now for £20"
+    href="/contact#enquiry"
+  />
+</Base>

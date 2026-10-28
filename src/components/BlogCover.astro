@@ -1,0 +1,128 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { post: CollectionEntry<'blog'>; class?: string }
+const { post, class: className = '' } = Astro.props;
+const { tag, motif, tone, readingTime } = post.data;
+
+// bg / fg / accent / second accent per tone
+const tones = {
+  ink: ['#0a1a36', '#f5f2ec', '#d8f23a', '#ff5b1f'],
+  navy: ['#132b57', '#f5f2ec', '#ff5b1f', '#d8f23a'],
+  orange: ['#ff5b1f', '#0a1a36', '#0a1a36', '#f5f2ec'],
+  lime: ['#d8f23a', '#0a1a36', '#0a1a36', '#ff5b1f'],
+  plaster: ['#ece7de', '#0a1a36', '#ff5b1f', '#2e6bff'],
+  blueprint: ['#2e6bff', '#ffffff', '#d8f23a', '#0a1a36'],
+} as const;
+const [bg, fg, accent, accent2] = tones[tone];
+const grid = fg === '#0a1a36' ? 'rgb(10 26 54 / 0.07)' : 'rgb(255 255 255 / 0.07)';
+---
+<div
+  class:list={['cover @container relative aspect-[16/10] w-full overflow-hidden select-none', className]}
+  style={`--c-bg:${bg};--c-fg:${fg};--accent:${accent};--accent2:${accent2};--grid:${grid};background:var(--c-bg);color:var(--c-fg)`}
+  aria-hidden="true"
+>
+  <div class="blueprint absolute inset-0 [background-size:5cqw_5cqw]"></div>
+
+  <div class="absolute inset-x-[5cqw] top-[5cqw] flex items-center justify-between">
+    <span class="rounded-full border border-current/25 px-[2.2cqw] py-[0.9cqw] font-mono text-[2.3cqw] font-semibold tracking-[0.14em] uppercase">{tag}</span>
+    <svg viewBox="0 0 64 64" class="w-[6cqw]">
+      <rect x="13" y="38" width="9" height="13" rx="2" fill="var(--accent)" /><rect x="27.5" y="29" width="9" height="22" rx="2" fill="var(--accent)" /><rect x="42" y="19" width="9" height="32" rx="2" fill="var(--accent)" />
+    </svg>
+  </div>
+  <span class="absolute bottom-[5cqw] left-[5cqw] font-mono text-[2.1cqw] tracking-[0.14em] uppercase opacity-60">{readingTime} min read</span>
+
+  <div class="cover-art absolute inset-0 flex items-center justify-center pt-[4cqw] transition-transform duration-700 ease-out-expo">
+    {motif === 'calendar' && (
+      <div class="relative grid w-[54cqw] grid-cols-4 gap-[1.4cqw]">
+        {['Aug', 'Nov', 'Feb', 'May'].map((m, i) => (
+          <div class:list={['relative rounded-[1.6cqw] border-[0.35cqw] px-[1.6cqw] py-[1.4cqw]', i === 1 ? 'border-[var(--accent2)]' : 'border-current/25']}>
+            <span class="block font-mono text-[1.9cqw] uppercase opacity-60">Q{i + 1} due</span>
+            <span class="block font-display text-[6.4cqw] leading-none font-extrabold tracking-tight">7</span>
+            <span class="block font-mono text-[2.2cqw]">{m}</span>
+            {i === 1 && <span class="absolute -bottom-[7cqw] left-1/2 -translate-x-1/2 -rotate-12 rounded-[1cqw] border-[0.5cqw] border-[var(--accent2)] px-[1.4cqw] py-[0.3cqw] font-display text-[4.2cqw] font-extrabold tracking-wider text-[var(--accent2)]" style="background:var(--c-bg)">LATE</span>}
+          </div>
+        ))}
+      </div>
+    )}
+
+    {motif === 'ledger' && (
+      <div class="grid w-[56cqw] gap-[1.2cqw] font-mono text-[3.2cqw] tabular-nums">
+        <div class="flex justify-between rounded-[1.6cqw] bg-current/10 px-[2.6cqw] py-[1.8cqw]"><span>Gross labour</span><span>£1,000</span></div>
+        <div class="flex justify-between rounded-[1.6cqw] bg-current/10 px-[2.6cqw] py-[1.8cqw]"><span>CIS deducted</span><span>−£200</span></div>
+        <div class="flex justify-between rounded-[1.6cqw] px-[2.6cqw] py-[1.8cqw]" style="background:var(--c-fg);color:var(--c-bg)"><span>Paid to bank</span><span style="color:var(--accent2)">£800</span></div>
+      </div>
+    )}
+
+    {motif === 'software' && (
+      <div class="text-center">
+        <span class="block font-mono text-[2.6cqw] tracking-[0.14em] uppercase opacity-70">Software subscription</span>
+        <span class="block font-display text-[24cqw] leading-[0.85] font-extrabold tracking-tighter">£0</span>
+        <span class="mt-[2cqw] flex justify-center gap-[1.2cqw] font-mono text-[2.2cqw]">
+          {['NatWest', 'RBS', 'Mettle'].map((b) => <span class="rounded-full px-[2cqw] py-[0.8cqw]" style="background:var(--c-fg);color:var(--c-bg)">{b}</span>)}
+        </span>
+      </div>
+    )}
+
+    {motif === 'price' && (
+      <div class="flex items-end gap-[2cqw]">
+        <span class="font-display text-[26cqw] leading-[0.8] font-extrabold tracking-tighter">£20</span>
+        <span class="mb-[2cqw] grid gap-[0.6cqw] font-mono text-[2.6cqw] uppercase">
+          <span>per month</span>
+          <span class="rounded-full px-[1.8cqw] py-[0.6cqw] text-center" style="background:var(--accent);color:var(--accent2)">MTD ready</span>
+        </span>
+      </div>
+    )}
+
+    {motif === 'checklist' && (
+      <ul class="grid w-[52cqw] gap-[1.6cqw] text-[3.4cqw] font-semibold">
+        {['Check your income', 'Pick MTD software', 'Go digital', 'Send quarterly updates'].map((item, i) => (
+          <li class="flex items-center gap-[2cqw]">
+            <span class="grid size-[5cqw] shrink-0 place-items-center rounded-[1.2cqw]" style={i < 3 ? 'background:var(--accent);color:var(--c-bg)' : 'border:0.35cqw solid currentColor;opacity:.4'}>
+              {i < 3 && <svg viewBox="0 0 24 24" class="w-[3cqw]" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7" /></svg>}
+            </span>
+            <span class:list={[i === 3 && 'opacity-50']}>{item}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    {motif === 'quarters' && (
+      <div class="flex h-[30cqw] items-end gap-[2.4cqw]">
+        {[38, 58, 78, 100].map((h, i) => (
+          <div class="flex w-[9cqw] flex-col items-center gap-[1cqw]">
+            <span class="font-mono text-[2cqw] opacity-70">{['7 Aug', '7 Nov', '7 Feb', '7 May'][i]}</span>
+            <span class="w-full rounded-t-[1.4cqw]" style={`height:${h * 0.22}cqw;background:${i === 3 ? 'var(--accent)' : 'currentColor'};opacity:${i === 3 ? 1 : 0.25 + i * 0.2}`}></span>
+            <span class="font-display text-[3.6cqw] font-extrabold">Q{i + 1}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {motif === 'question' && (
+      <div class="flex items-center gap-[3cqw]">
+        <span class="font-display text-[30cqw] leading-[0.8] font-extrabold" style="color:var(--accent2)">?</span>
+        <span class="grid gap-[1cqw] font-display text-[6.5cqw] leading-[0.95] font-extrabold tracking-tight">
+          <span>CIS</span>
+          <span class="font-mono text-[3cqw] font-normal opacity-60">+</span>
+          <span>MTD</span>
+        </span>
+      </div>
+    )}
+
+    {motif === 'timeline' && (
+      <div class="w-[64cqw]">
+        <div class="relative flex justify-between">
+          <span class="absolute top-[2.2cqw] right-[2cqw] left-[2cqw] h-[0.4cqw] bg-current/25"></span>
+          {[['2026', '£50k+'], ['2027', '£30k+'], ['2028', '£20k+']].map(([year, amount], i) => (
+            <span class="relative flex flex-col items-center gap-[1.4cqw]">
+              <span class="size-[4.8cqw] rounded-full border-[0.6cqw]" style={`border-color:var(--c-bg);background:${i === 1 ? 'var(--accent2)' : 'var(--accent)'}`}></span>
+              <span class="font-display text-[7cqw] leading-none font-extrabold tracking-tight">{year}</span>
+              <span class="font-mono text-[2.4cqw] opacity-70">{amount}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</div>

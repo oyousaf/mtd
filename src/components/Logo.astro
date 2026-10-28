@@ -1,0 +1,17 @@
+---
+interface Props { class?: string }
+const { class: className = '' } = Astro.props;
+---
+<span class:list={['inline-flex items-center gap-2.5', className]}>
+  <svg viewBox="0 0 64 64" class="size-9 shrink-0" aria-hidden="true">
+    <rect width="64" height="64" rx="15" class="fill-navy dark:fill-plaster/10" />
+    <rect x="13" y="38" width="9" height="13" rx="2" fill="#ff5b1f" />
+    <rect x="27.5" y="29" width="9" height="22" rx="2" fill="#ff5b1f" />
+    <rect x="42" y="19" width="9" height="32" rx="2" fill="#ff5b1f" />
+    <path d="M12 30 L30 17 L37 22 L50 12 M44 11.5 L51 11 L50.5 18" fill="none" stroke="#d8f23a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+  <span class="flex flex-col leading-none">
+    <span class="font-display text-[1.35rem] font-extrabold tracking-tight">MTD <span class="font-semibold">Trade Books</span></span>
+    <span class="mt-1 font-mono text-[0.6rem] tracking-[0.18em] text-muted uppercase">Bookkeeping for tradespeople</span>
+  </span>
+</span>

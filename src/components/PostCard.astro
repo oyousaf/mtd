@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BlogCover from './BlogCover.astro';
+interface Props { post: CollectionEntry<'blog'>; featured?: boolean }
+const { post, featured = false } = Astro.props;
+const date = post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<article class:list={['reveal group relative flex flex-col', featured && 'md:col-span-2 lg:grid lg:grid-cols-2 lg:items-center lg:gap-10']}>
+  <div class="overflow-hidden rounded-[1.5rem] border border-line transition-[box-shadow,translate] duration-500 ease-out-expo group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-30px_rgb(10_26_54/0.5)]" transition:name={`cover-${post.id}`}>
+    <BlogCover post={post} />
+  </div>
+  <div class:list={['mt-5', featured && 'lg:mt-0']}>
+    <p class="flex gap-3 font-mono text-xs tracking-wider text-muted uppercase">
+      <time datetime={post.data.pubDate.toISOString()}>{date}</time><span aria-hidden="true">·</span><span>{post.data.readingTime} min read</span>
+    </p>
+    <h3 class:list={['mt-3 leading-tight font-bold transition-colors duration-300', featured ? 'text-3xl lg:text-4xl' : 'text-xl']}>
+      <a href={`/blog/${post.id}`} class="after:absolute after:inset-0 group-hover:text-orange-deep dark:group-hover:text-orange">{post.data.title}</a>
+    </h3>
+    <p class:list={['mt-3 text-muted', featured ? 'text-lg' : 'line-clamp-3 text-sm']}>{post.data.description}</p>
+  </div>
+</article>

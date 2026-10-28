@@ -1,0 +1,96 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHero from '@/components/PageHero.astro';
+import OfferBanner from '@/components/OfferBanner.astro';
+import Steps from '@/components/Steps.astro';
+import ServiceDetail from '@/components/ServiceDetail.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import MtdChecker from '@/components/MtdChecker.tsx';
+import Checklist from '@/components/Checklist.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import hero from '@/assets/photos/hmrc-laptop.webp';
+import paperwork from '@/assets/photos/site-paperwork.webp';
+
+const quarters = [
+  { period: '6 Apr – 5 Jul', due: '7 Aug' },
+  { period: '6 Jul – 5 Oct', due: '7 Nov' },
+  { period: '6 Oct – 5 Jan', due: '7 Feb' },
+  { period: '6 Jan – 5 Apr', due: '7 May' },
+];
+---
+<Base
+  title="Making Tax Digital"
+  description="Making Tax Digital for builders and tradespeople: quarterly MTD updates, digital records and year-end prep. Get set up for April 2027 for a £20 one-off fee."
+>
+  <PageHero
+    eyebrow="MTD for Income Tax"
+    title="Making Tax Digital for the building trade"
+    lede="Simple, affordable bookkeeping to help you stay compliant with Making Tax Digital, so you can focus on the job and leave the paperwork to us."
+    image={hero}
+    imageAlt="A laptop on a desk showing the HM Revenue & Customs logo"
+    primary={{ href: '/contact#enquiry', label: 'Get started' }}
+    secondary={{ href: '#checker', label: 'Does MTD apply to me?' }}
+    checks={['Stay on top of your records', 'Be ready for MTD deadlines', 'HMRC-compliant bookkeeping', 'Save time and reduce stress']}
+  />
+
+  <OfferBanner />
+
+  <section id="checker" class="wrap py-20 lg:py-28">
+    <SectionHeading
+      eyebrow="Don’t miss the MTD deadlines"
+      title="Quarterly updates are required from April 2027 for income over £30,000"
+      lede="Applies to sole traders and landlords with qualifying income over £30,000, based on the 2025–26 tax return. Check where you stand."
+      class="mb-10"
+    />
+    <div class="reveal"><MtdChecker client:visible /></div>
+
+    <div class="mt-6 grid gap-4 lg:grid-cols-3">
+      <div class="reveal card p-7 lg:col-span-2">
+        <h3 class="text-2xl font-extrabold">The quarterly calendar</h3>
+        <p class="mt-2 text-sm text-muted">Each update is a summary of income and expenses from your digital records. It isn’t a tax return.</p>
+        <ol class="mt-6 grid gap-3 sm:grid-cols-4">
+          {quarters.map((q, i) => (
+            <li class="rounded-2xl border border-line bg-bg p-4">
+              <span class="font-mono text-xs text-muted">Q{i + 1} · {q.period}</span>
+              <span class="mt-3 block font-mono text-xs tracking-wider text-orange-deep uppercase dark:text-orange">Due</span>
+              <span class="mono-num block text-3xl font-medium">{q.due}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div class="reveal flex flex-col justify-between rounded-[1.75rem] bg-orange p-7 text-ink">
+        <h3 class="text-2xl font-extrabold">Missed a deadline?</h3>
+        <Checklist items={['Understand if MTD applies to you', 'Get set up for April 2027', 'Understand any penalties', 'Stay compliant going forward']} class="mt-5 text-sm [&_span:first-child]:bg-ink [&_span:first-child]:text-lime" />
+        <a href="/blog/missed-mtd-quarterly-deadline-builders" class="mt-6 font-semibold underline underline-offset-4">What happens next →</a>
+      </div>
+    </div>
+  </section>
+
+  <Steps
+    eyebrow="How we help"
+    title="How we help with Making Tax Digital"
+    steps={[
+      { title: 'Keep your records digital', text: 'We set up a secure connection to your business bank account and use cloud software to keep your income and expenses up to date.' },
+      { title: 'Quarterly MTD updates', text: 'We prepare and submit your quarterly MTD updates to HMRC (when required) so you meet your obligations.' },
+      { title: 'Year-end preparation', text: 'We keep your records ready for your accountant or year-end work. Full year-end support, including your tax return, is a separate service from £200.' },
+      { title: 'Ongoing support', text: 'We’re here to answer your questions and help you stay compliant as the MTD requirements change.' },
+    ]}
+  />
+
+  <ServiceDetail
+    title="MTD-ready bookkeeping, done for you"
+    intro="We provide straightforward, reliable bookkeeping for self-employed builders, tradespeople and CIS subcontractors, using cloud software to keep your records up to date and ready for Making Tax Digital when it applies to you."
+    image={paperwork}
+    imageAlt="A builder reviewing records on a laptop on site"
+    included={[
+      'Setup and connection to FreeAgent',
+      'Import and categorise your transactions',
+      'Quarterly MTD updates (when required)',
+      'Keep you HMRC compliant',
+      'Ongoing support and advice',
+      'Year-end records ready for your accountant or self-assessment',
+    ]}
+  />
+
+  <div class="pt-20"><CtaBand title="Don’t leave MTD to the last minute" text="Get set up now for £20 and pay nothing monthly until April 2027." label="Enrol for £20" href="/contact#enquiry" /></div>
+</Base>

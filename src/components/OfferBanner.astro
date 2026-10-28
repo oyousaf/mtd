@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import { ArrowRight } from '@lucide/astro';
+import Checklist from './Checklist.astro';
+import Countdown from './Countdown.tsx';
+import letter from '@/assets/photos/hmrc-letter.webp';
+
+interface Props { items?: string[]; cta?: string }
+const {
+  items = ['Setup and FreeAgent access', 'Get your records organised', 'Stay HMRC compliant', 'Friendly, specialist support'],
+  cta = 'Enrol now for £20',
+} = Astro.props;
+---
+<section class="wrap py-6" aria-labelledby="offer-title">
+  <div class="reveal relative overflow-hidden rounded-[2rem] bg-ink text-plaster">
+    <div class="blueprint absolute inset-0 [--grid:rgb(120_160_255/0.09)]" aria-hidden="true"></div>
+    <div class="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-12 lg:p-14">
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-4">
+          <div class="relative size-20 shrink-0 sm:size-24">
+            <svg viewBox="0 0 100 100" class="size-full animate-[spin_18s_linear_infinite] motion-reduce:animate-none" aria-hidden="true">
+              <defs><path id="stamp" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" /></defs>
+              <text class="fill-orange font-mono text-[10px] font-semibold uppercase"><textPath href="#stamp" textLength="236" lengthAdjust="spacing">Starting MTD · April 2027 ·</textPath></text>
+            </svg>
+            <span class="absolute inset-0 grid place-items-center font-display text-xl font-extrabold text-lime">£20</span>
+          </div>
+          <p class="eyebrow !text-lime">For April 2027 starters</p>
+        </div>
+        <h2 id="offer-title" class="mt-6 text-[clamp(2rem,4.4vw,3.4rem)] leading-[0.98] font-extrabold">
+          Received a letter from HMRC about Making Tax Digital?
+        </h2>
+        <p class="mt-5 max-w-xl text-lg text-plaster/75">
+          Get ready for April 2027 for just <strong class="text-plaster">£20</strong>, a one-off enrolment and setup fee. No monthly bookkeeping payments until April 2027.
+        </p>
+        <Checklist items={items} class="mt-7 sm:grid-cols-2" />
+        <a href="/contact#enquiry" class="btn-primary mt-9">{cta} <ArrowRight class="size-4" aria-hidden="true" /></a>
+      </div>
+      <div class="flex flex-col justify-between gap-6 lg:col-span-5">
+        <Image src={letter} alt="An HMRC letter" class="hidden w-56 rotate-[-6deg] rounded-xl shadow-2xl shadow-black/40 lg:ml-auto lg:block" />
+        <div class="rounded-3xl border border-plaster/10 bg-navy/60 p-5 backdrop-blur">
+          <p class="font-mono text-xs tracking-[0.18em] text-plaster/60 uppercase">Countdown to 6 April 2027</p>
+          <div class="mt-4"><Countdown client:visible /></div>
+          <p class="mt-4 text-sm text-plaster/60">Quarterly updates will be required for sole traders and landlords with qualifying income over £30,000.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
