@@ -149,7 +149,7 @@
 }
 @keyframes enter-media {
   from { opacity: 0; clip-path: inset(6% 6% 6% 6% round 2rem); scale: 1.03; }
-  to { clip-path: inset(0 0 0 0 round 0); }
+  to { clip-path: inset(0 0 0 0 round 2rem); }
 }
 @keyframes call-bar-in {
   from { opacity: 0; translate: 0 120%; }
