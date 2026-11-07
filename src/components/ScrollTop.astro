@@ -1,0 +1,96 @@
+---
+// Back to top: fades in once the page has been scrolled, in this site's own button style.
+---
+
+<button
+  type="button"
+  data-scroll-top
+  aria-label="Back to top"
+  title="Back to top"
+  class="scroll-top rounded-full bg-orange text-ink shadow-[0_8px_24px_-8px_rgb(255_91_31/0.6)] hover:bg-[#ff6d36]"
+  transition:persist="scroll-top"
+>
+  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"></path>
+  </svg>
+</button>
+
+<style>
+  .scroll-top {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 0.75rem;
+    transition:
+      opacity 250ms ease,
+      translate 350ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 250ms,
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .scroll-top[data-show] {
+    visibility: visible;
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .scroll-top svg {
+    transition: translate 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .scroll-top:hover svg {
+    translate: 0 -2px;
+  }
+
+  @media (min-width: 40rem) {
+    .scroll-top {
+      right: 1.25rem;
+      bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-top,
+    .scroll-top svg {
+      translate: none;
+      transition: none;
+    }
+  }
+
+  @media print {
+    .scroll-top {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const sync = () => {
+    document.querySelector('[data-scroll-top]')?.toggleAttribute('data-show', window.scrollY > 600);
+  };
+
+  window.addEventListener('scroll', sync, { passive: true });
+  document.addEventListener('astro:page-load', sync);
+
+  document.querySelector('[data-scroll-top]')?.addEventListener('click', () => {
+    // The button is about to disappear, so keyboard focus moves to the top of the content.
+    const main = document.getElementById('main');
+    if (main) {
+      main.tabIndex = -1;
+      main.style.outline = 'none';
+      main.focus({ preventScroll: true });
+    }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  });
+</script>
